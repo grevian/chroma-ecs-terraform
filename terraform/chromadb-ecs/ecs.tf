@@ -80,7 +80,7 @@ resource "aws_ecs_task_definition" "chroma_task_definition" {
       essential = true
       environment = [
         { "name" : "CHROMA_OTEL_SERVICE_NAME", "value" : "chromadb" },
-        { "name" : "CHROMA_OTEL_COLLECTION_ENDPOINT", "value" : "http://otel_sidecar:4317/" },
+        { "name" : "CHROMA_OTEL_COLLECTION_ENDPOINT", "value" : "http://otel_sidecar:4318/" },
         { "name" : "CHROMA_OTEL_GRANULARITY", "value" : "operation" }
       ]
       portMappings = [
