@@ -1,0 +1,5 @@
+/terraform/chromadb-ecs/terraform.tfstate.backup
+/terraform/chromadb-ecs/terraform.tfstate
+/terraform/chromadb-ecs/info.txt
+/terraform/chromadb-ecs/.terraform.lock.hcl
+/terraform/chromadb-ecs/.terraform/
