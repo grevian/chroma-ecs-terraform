@@ -50,6 +50,16 @@ resource "aws_ecs_cluster" "chroma_cluster" {
   name = "chroma-cluster"
 }
 
+resource "aws_ecs_cluster_capacity_providers" "spot_configuration" {
+  cluster_name = aws_ecs_cluster.chroma_cluster.name
+
+  capacity_providers = ["FARGATE_SPOT", "FARGATE"]
+
+  default_capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+  }
+}
+
 resource "aws_ecs_task_definition" "chroma_task_definition" {
   family                   = "chroma-task-definition"
   network_mode             = "awsvpc"
@@ -59,14 +69,18 @@ resource "aws_ecs_task_definition" "chroma_task_definition" {
   execution_role_arn       = aws_iam_role.chroma_ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.chroma_ecs_task_role.arn
 
+  runtime_platform {
+    cpu_architecture = "ARM64"
+  }
+
   container_definitions = jsonencode([
     {
       name      = "chroma-container"
-      image     = "ghcr.io/chroma-core/chroma:0.4.7"
+      image     = "ghcr.io/chroma-core/chroma:0.4.22"
       essential = true
       environment = [
         { "name" : "CHROMA_OTEL_SERVICE_NAME", "value" : "chromadb" },
-        { "name" : "CHROMA_OTEL_COLLECTION_ENDPOINT", "value" : "otel_sidecar" },
+        { "name" : "CHROMA_OTEL_COLLECTION_ENDPOINT", "value" : "http://otel_sidecar:4317/" },
         { "name" : "CHROMA_OTEL_GRANULARITY", "value" : "operation" }
       ]
       portMappings = [
