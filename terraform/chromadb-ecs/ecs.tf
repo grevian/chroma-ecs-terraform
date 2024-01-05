@@ -61,13 +61,13 @@ resource "aws_ecs_task_definition" "chroma_task_definition" {
 
   container_definitions = jsonencode([
     {
-      name        = "chroma-container"
-      image       = "ghcr.io/chroma-core/chroma:0.4.7"
-      essential   = true
+      name      = "chroma-container"
+      image     = "ghcr.io/chroma-core/chroma:0.4.7"
+      essential = true
       environment = [
-        { "name": "CHROMA_OTEL_SERVICE_NAME", "value": "chromadb"},
-        { "name": "CHROMA_OTEL_COLLECTION_ENDPOINT", "value": "otel_sidecar"},
-        { "name": "CHROMA_OTEL_GRANULARITY", "value": "operation"}
+        { "name" : "CHROMA_OTEL_SERVICE_NAME", "value" : "chromadb" },
+        { "name" : "CHROMA_OTEL_COLLECTION_ENDPOINT", "value" : "otel_sidecar" },
+        { "name" : "CHROMA_OTEL_GRANULARITY", "value" : "operation" }
       ]
       portMappings = [
         {
@@ -92,11 +92,11 @@ resource "aws_ecs_task_definition" "chroma_task_definition" {
       }
     },
     {
-      name        = "otel_sidecar"
-      image       = "public.ecr.aws/aws-observability/aws-otel-collector:latest"
-      essential   = true
+      name      = "otel_sidecar"
+      image     = "public.ecr.aws/aws-observability/aws-otel-collector:latest"
+      essential = true
       environment = [
-         { "name": "OTEL_SERVICE_NAME", "value": "chromadb"},
+        { "name" : "OTEL_SERVICE_NAME", "value" : "chromadb" },
       ]
       portMappings = [
         {
